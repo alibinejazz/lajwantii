@@ -24,7 +24,6 @@ export const FormProvider = ({ children }) => {
     orderNumber: "",
     orderTakenBy: "",
     items: "",
-    designCodes: "",
     bookingDate: "",
     invoiceNumber: generateInvoiceNumber(),
     orderHandedTo: "",
@@ -32,6 +31,7 @@ export const FormProvider = ({ children }) => {
     advancePaid: "",
     amountDue: "",
     size: "",
+    deliveryDate:"",
   });
 
   const updateFormData = (field, value) => {
@@ -47,7 +47,6 @@ export const FormProvider = ({ children }) => {
       orderNumber: "",
       orderTakenBy: "",
       items: "",
-      designCodes: "",
       bookingDate: "",
       invoiceNumber: generateInvoiceNumber(),
       orderHandedTo: "",
@@ -55,6 +54,7 @@ export const FormProvider = ({ children }) => {
       advancePaid: "",
       amountDue: "",
       size: "",
+      deliveryDate:"",
     });
   };
 

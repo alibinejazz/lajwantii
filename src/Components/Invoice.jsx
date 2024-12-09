@@ -135,7 +135,7 @@ export const Invoice = () => {
                     </td>
                     <td className="border border-gray-300 px-4 py-2">1</td>
                     <td className="border border-gray-300 px-4 py-2">
-                      30,300 PKR
+                    {(parseInt(formData.advancePaid, 10) || 0) + (parseInt(formData.amountDue, 10) || 0)} PKR
                     </td>
                   </tr>
                 </tbody>

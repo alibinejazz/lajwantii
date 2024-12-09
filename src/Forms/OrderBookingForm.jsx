@@ -18,6 +18,13 @@ const OrderBookingForm = () => {
   useEffect(() => {
     resetFormData();
   }, []);
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
@@ -27,9 +34,9 @@ const OrderBookingForm = () => {
       formData.address,
       formData.email,
       formData.invoiceNumber,
-      new Date().toLocaleDateString(),
+      formatDate(new Date()),
+      formData.deliveryDate,
       formData.items,
-      formData.designCodes,
       formData.orderTakenBy,
       formData.orderHandedTo,
       formData.status,
@@ -48,7 +55,7 @@ const OrderBookingForm = () => {
 
   return (
     <div className="bg-[#f5f5f5] font-serif">
-      <div className="flex items-center justify-center h-16 w-full mb-6">
+      <div className="flex items-center justify-center h-16 w-full pt-3 mb-6">
         <img src={logo} className="w-64" alt="" />
       </div>
       <form
@@ -83,15 +90,9 @@ const OrderBookingForm = () => {
         >
           Please provide the customer's details.
         </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "1rem",
-          }}
-        >
+        <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
           <FormField
-            label="Customer Name"
+            label="Client Name"
             value={formData.customerName}
             onChange={handleChange("customerName")}
             placeholder="Enter customer name"
@@ -142,20 +143,13 @@ const OrderBookingForm = () => {
         </p>
         <div style={{ marginTop: "1rem" }}>
           <FormField
-            label="Item"
+            label="Garment Code"
             value={formData.items}
             onChange={handleChange("items")}
-            placeholder="Enter item"
+            placeholder="Enter garment code"
           />
         </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "1rem",
-            marginTop: "1rem",
-          }}
-        >
+        <div className="grid grid-cols-2 gap-[1rem] max-sm:grid-cols-1 ">
           <FormField
             label="Order Number"
             value={formData.invoiceNumber}
@@ -164,12 +158,33 @@ const OrderBookingForm = () => {
           />
           <div>
             <label
+              htmlFor="deliveryDate"
+              style={{
+                display: "block",
+                marginBottom: "0.5rem",
+              }}
+            >
+              Delivery Date
+            </label>
+            <input
+              type="date"
+              id="deliveryDate"
+              value={formData.deliveryDate}
+              onChange={handleChange("deliveryDate")}
+              style={{
+                width: "100%",
+                padding: "0.7rem",
+                borderRadius: "10px",
+                border: "1px solid #d1b035",
+              }}
+            />
+          </div>
+          <div>
+            <label
               htmlFor="size"
               style={{
                 display: "block",
-                fontWeight: "bold",
                 marginBottom: "0.5rem",
-                color: "#666",
               }}
             >
               Size
@@ -182,10 +197,9 @@ const OrderBookingForm = () => {
                 width: "100%",
                 padding: "1rem",
                 borderRadius: "10px",
-                border: "1px solid #c5a54e",
-                backgroundColor: "#fdfdfd",
-                color: "#333",
-              }}
+                border: "1px solid #d1b035",
+                 backgroundColor:"#ffffff",
+                }}
             >
               <option value="">Select Size</option>
               <option value="Small">Small</option>
@@ -194,12 +208,6 @@ const OrderBookingForm = () => {
               <option value="X-Large">X-Large</option>
             </select>
           </div>
-          <FormField
-            label="Design Codes"
-            value={formData.designCodes}
-            onChange={handleChange("designCodes")}
-            placeholder="Enter design codes"
-          />
           <FormField
             label="Order Taken By"
             value={formData.orderTakenBy}
@@ -217,9 +225,7 @@ const OrderBookingForm = () => {
               htmlFor="status"
               style={{
                 display: "block",
-                fontWeight: "bold",
                 marginBottom: "0.5rem",
-                color: "#666",
               }}
             >
               Status
@@ -232,10 +238,9 @@ const OrderBookingForm = () => {
                 width: "100%",
                 padding: "1rem",
                 borderRadius: "10px",
-                border: "1px solid #c5a54e",
-                backgroundColor: "#fdfdfd",
-                color: "#333",
-              }}
+                border: "1px solid #d1b035",
+              backgroundColor:"#ffffff"   
+                       }}
             >
               <option value="">Select Status</option>
               <option value="Approved">Approved</option>
@@ -255,7 +260,6 @@ const OrderBookingForm = () => {
             onChange={handleChange("amountDue")}
             placeholder="Enter amount due"
           />
-          
         </div>
 
         <button
