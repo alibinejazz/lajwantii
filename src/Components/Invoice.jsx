@@ -53,12 +53,17 @@ export const Invoice = () => {
         imgWidth = (canvas.width * pdfHeight) / canvas.height;
       }
   
-      const xOffset = (pdfWidth - imgWidth) / 2; // Center horizontally
-      const yOffset = (pdfHeight - imgHeight) / 2; // Center vertically
+      const xOffset = (pdfWidth - imgWidth) / 6; // Center horizontally
+      const yOffset = (pdfHeight - imgHeight) / 6; // Center vertically
   
       pdf.addImage(imgData, "PNG", xOffset, yOffset, imgWidth, imgHeight);
       pdf.save(`Invoice.pdf`);
     });
+  };
+
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${month}/${day}/${year}`;
   };
   
 
@@ -66,10 +71,10 @@ export const Invoice = () => {
     <div>
       <div
         id="invoiceCapture"
-        className="max-w-4xl mx-auto border border-gray-300 p-6 rounded-lg font-serif mt-2"
+        className="max-w-4xl mx-auto border border-gray-300 p-6 rounded-lg font-serif mt-8"
       >
         <div>
-          <div className="flex flex-col items-center justify-center h-16 w-full mb-6">
+          <div className="flex flex-col items-center justify-center h-16 w-full mb-6 mt-2">
             <img src={logo} className="w-64" alt="" />
             <h1 className="text-2xl font-semibold text-gray-800 max-sm:text-sm">INVOICE</h1>
           </div>
@@ -81,6 +86,7 @@ export const Invoice = () => {
                 <span className="font-normal">{formData?.invoiceNumber}</span>
               </h2>
               <p className="text-sm text-gray-500">Date: {currentDate}</p>
+              <p className="text-sm text-gray-500">Taken By: {formData.orderTakenBy}</p>
             </div>
           </div>
           <header className="flex justify-between items-center border-b border-gray-300 pb-4 flex-wrap">
@@ -95,11 +101,11 @@ export const Invoice = () => {
             </div>
           </header>
 
-          <section className="mt-6">
-            <h3 className="text-lg font-semibold text-gray-700">
+          <section className="mt-6 text-md">
+            <h3 className="text-lg font-semibold text-gray-700 ">
               Client Details
             </h3>
-            <div className="mt-2 text-sm text-gray-600">
+            <div className="mt-2  text-gray-600">
               <p>
                 <span className="font-medium">Name:</span>{" "}
                 {formData?.customerName}
@@ -107,6 +113,14 @@ export const Invoice = () => {
               <p>
                 <span className="font-medium">Contact:</span>{" "}
                 {formData?.phoneNumber}
+              </p>
+              <p>
+                <span className="font-medium">Email: </span>{" "}
+                {formData?.email}
+              </p>
+              <p>
+                <span className="font-medium">Address: </span>{" "}
+                {formData?.address}
               </p>
             </div>
           </section>
@@ -116,13 +130,14 @@ export const Invoice = () => {
               Order Details
             </h3>
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-300 mt-2 text-sm text-gray-600">
+              <table className="w-full border-collapse border border-gray-300 mt-2 text-md text-gray-600">
                 <thead>
                   <tr className="bg-gray-100 text-left">
                     <th className="border border-gray-300 px-4 py-2">SR#</th>
                     <th className="border border-gray-300 px-4 py-2">
                       Garment Code
                     </th>
+                    <th className="border border-gray-300 px-4 py-2">Size</th>
                     <th className="border border-gray-300 px-4 py-2">Qty</th>
                     <th className="border border-gray-300 px-4 py-2">Amount</th>
                   </tr>
@@ -131,7 +146,10 @@ export const Invoice = () => {
                   <tr>
                     <td className="border border-gray-300 px-4 py-2">1</td>
                     <td className="border border-gray-300 px-4 py-2 ">
-                      <p className="text-lg">{formData?.items}</p>
+                      {formData?.items}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2 ">
+                      {formData?.size}
                     </td>
                     <td className="border border-gray-300 px-4 py-2">1</td>
                     <td className="border border-gray-300 px-4 py-2">
@@ -146,23 +164,25 @@ export const Invoice = () => {
           <section className="mt-6 flex justify-between items-center flex-wrap">
             <div>
               <p className="text-sm text-gray-600">
-                <span className="font-medium">Dispatch Status:</span> Dispatched
+                <span className="font-medium">Status:</span> {formData.status}
               </p>
               <p className="text-sm text-gray-600">
-                <span className="font-medium">Remarks:</span> Pay Fast Karachi
-                PAK
+                <span className="font-medium">Delivery Date:</span> {formatDate(formData.deliveryDate)}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Handed To:</span> {formData.orderHandedTo}
               </p>
             </div>
             <div className="flex gap-2">
-              <h3 className="text-md font-semibold text-gray-700">
-                Amount Due:{" "}
+              <h3 className="text-lg font-semibold text-gray-700">
+                Amount Paid:{" "}
               </h3>
-              <p className="text-md font-bold text-gray-800"> {formData?.amountDue} PKR</p>
+              <p className="text-lg font-bold text-gray-700"> {formData?.advancePaid} PKR</p>
             </div>
           </section>
         </div>
       </div>
-      <div className="mt-4 text-center flex items-center justify-center gap-2">
+      <div className="mt-4 text-center flex items-center justify-center gap-2 font-serif">
         <button
           onClick={GenerateInvoice}
           className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600"
