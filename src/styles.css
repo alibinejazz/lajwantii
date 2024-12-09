@@ -1,0 +1,41 @@
+.videoSectionWrap {
+    position: relative;
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .videoSectionWrap .videoWrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    /*background: linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.02) 100%),*/
+    /*  radial-gradient(*/
+    /*    108.09% 141.42% at 0% 100%,*/
+    /*    rgba(219, 255, 213, 0.3) 0%,*/
+    /*    rgba(255, 255, 255, 0) 100%*/
+    /*  ),*/
+    /*  linear-gradient(135deg, #ffeede 5.71%, #ffd9d9 47%, #a3dce7 93.47%);*/
+  }
+  .videoWrap .videoEle {
+    width: 100%;
+    max-height: 400px;
+  }
+  .videoSectionWrap .hide {
+    display: none;
+  }
+  
+  .videoSectionWrap .show {
+    display: flex;
+  }
+  
+  .hide {
+    display: none;
+  }
+  .show {
+    display: flex;
+  }
+      
