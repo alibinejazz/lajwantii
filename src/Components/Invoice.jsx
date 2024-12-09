@@ -62,6 +62,7 @@ export const Invoice = () => {
   };
 
   const formatDate = (dateString) => {
+    if(!dateString) return "N/A";
     const [year, month, day] = dateString.split("-");
     return `${month}/${day}/${year}`;
   };
@@ -74,20 +75,13 @@ export const Invoice = () => {
         className="max-w-4xl mx-auto border border-gray-300 p-6 rounded-lg font-serif mt-8"
       >
         <div>
-          <div className="flex flex-col items-center justify-center h-16 w-full mb-6 mt-2">
+          <div className="flex flex-col items-center justify-center h-16 w-full mb-12 mt-2">
             <img src={logo} className="w-64" alt="" />
             <h1 className="text-2xl font-semibold text-gray-800 max-sm:text-sm">INVOICE</h1>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex justify-center items-center w-fit"></div>
-            <div className="flex flex-col">
-              <h2 className="text-md font-bold text-gray-800">
-                Invoice #:{" "}
-                <span className="font-normal">{formData?.invoiceNumber}</span>
-              </h2>
-              <p className="text-sm text-gray-500">Date: {currentDate}</p>
-              <p className="text-sm text-gray-500">Taken By: {formData.orderTakenBy}</p>
-            </div>
+            
           </div>
           <header className="flex justify-between items-center border-b border-gray-300 pb-4 flex-wrap">
             <div>
@@ -98,6 +92,14 @@ export const Invoice = () => {
               <p className="text-sm text-gray-500">
                 sales@lajwanti.com.pk | +92 309-7773181
               </p>
+            </div>
+            <div className="flex flex-col">
+              <h2 className="text-md font-bold text-gray-800 max-sm:mt-2">
+                Invoice #:{" "}
+                <span className="font-normal">{formData?.invoiceNumber}</span>
+              </h2>
+              <p className="text-sm text-gray-500">Date: {currentDate}</p>
+              <p className="text-sm text-gray-500">Taken By: {formData.orderTakenBy}</p>
             </div>
           </header>
 
@@ -138,7 +140,6 @@ export const Invoice = () => {
                       Garment Code
                     </th>
                     <th className="border border-gray-300 px-4 py-2">Size</th>
-                    <th className="border border-gray-300 px-4 py-2">Qty</th>
                     <th className="border border-gray-300 px-4 py-2">Amount</th>
                   </tr>
                 </thead>
@@ -151,7 +152,6 @@ export const Invoice = () => {
                     <td className="border border-gray-300 px-4 py-2 ">
                       {formData?.size}
                     </td>
-                    <td className="border border-gray-300 px-4 py-2">1</td>
                     <td className="border border-gray-300 px-4 py-2">
                     {(parseInt(formData.advancePaid, 10) || 0) + (parseInt(formData.amountDue, 10) || 0)} PKR
                     </td>
@@ -167,7 +167,7 @@ export const Invoice = () => {
                 <span className="font-medium">Status:</span> {formData.status}
               </p>
               <p className="text-sm text-gray-600">
-                <span className="font-medium">Delivery Date:</span> {formatDate(formData.deliveryDate)}
+                <span className="font-medium">Delivery Date:</span> {formatDate(formData?.deliveryDate)}
               </p>
               <p className="text-sm text-gray-600">
                 <span className="font-medium">Handed To:</span> {formData.orderHandedTo}
