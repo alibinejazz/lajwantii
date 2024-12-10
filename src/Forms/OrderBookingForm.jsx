@@ -27,6 +27,10 @@ const OrderBookingForm = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (formData.phoneNumber.length !== 11) {
+      alert("Phone number must be exactly 11 digits.");
+      return;
+    }
     console.log("Form Data Submitted:", formData);
     const dataToSend = [
       formData.customerName,
@@ -103,6 +107,8 @@ const OrderBookingForm = () => {
             onChange={handleChange("phoneNumber")}
             placeholder="Enter phone number"
             type="number"
+            pattern="\d{11}" // This ensures exactly 11 digits
+  title="Phone number must be exactly 11 digits."
           />
           <FormField
             label="Email"
