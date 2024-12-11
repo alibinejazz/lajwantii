@@ -32,6 +32,7 @@ export const FormProvider = ({ children }) => {
     amountDue: "",
     size: "",
     deliveryDate:"",
+    invoicebase64:"",
   });
 
   const updateFormData = (field, value) => {
@@ -55,6 +56,7 @@ export const FormProvider = ({ children }) => {
       amountDue: "",
       size: "",
       deliveryDate:"",
+      invoicebase64:""
     });
   };
 

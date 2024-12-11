@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useFormContext } from "../Context/FormContext";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import logo from "../Images/Logo.png";
+import useUpdateGoogleSheet from "../Hooks/useUpdateGoogleSheet";
 
 export const Invoice = () => {
   const [invoiceNumber, setInvoiceNumber] = useState("");
@@ -14,8 +15,10 @@ export const Invoice = () => {
   const generateRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
-
+  
+  const { updateGoogleSheet, isLoading, error } = useUpdateGoogleSheet();
   const nav = useNavigate();
+  const [isDataSent, setIsDataSent] = useState(false);
 
   useEffect(() => {
     const part1 = generateRandomNumber(200, 299);
@@ -25,6 +28,48 @@ export const Invoice = () => {
     const today = new Date();
     setCurrentDate(today.toLocaleDateString());
   }, []);
+
+  useEffect(() => {
+    if (isDataSent || !formData || !invoiceNumber) return;
+  
+    const generateInvoiceBase64 = async () => {
+      const invoiceElement = document.getElementById("invoiceCapture");
+  
+      const canvas = await html2canvas(invoiceElement, { scale: 2 });
+      const base64Image = canvas.toDataURL("image/png");
+  
+      const today = new Date();
+      const updatedFormData = {
+        ...formData,
+        invoicebase64: base64Image,
+      };
+  
+      setFormData(updatedFormData);
+  
+      const dataToSend = [
+        updatedFormData.customerName,
+        updatedFormData.phoneNumber,
+        updatedFormData.address,
+        updatedFormData.email,
+        updatedFormData.invoiceNumber,
+        today.toISOString().split("T")[0],
+        updatedFormData.deliveryDate,
+        updatedFormData.items,
+        updatedFormData.orderTakenBy,
+        updatedFormData.orderHandedTo,
+        updatedFormData.status,
+        updatedFormData.advancePaid,
+        updatedFormData.amountDue,
+        updatedFormData.size,
+        updatedFormData.invoicebase64,
+      ];
+  console.log(dataToSend)
+      updateGoogleSheet(dataToSend);
+      setIsDataSent(true);
+    };
+  
+    generateInvoiceBase64();
+  }, [isDataSent, formData, invoiceNumber, updateGoogleSheet]);
 
   // SAme size invoice for all screens download
 

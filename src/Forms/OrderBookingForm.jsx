@@ -18,43 +18,13 @@ const OrderBookingForm = () => {
   useEffect(() => {
     resetFormData();
   }, []);
-
-  const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.phoneNumber.length !== 11) {
       alert("Phone number must be exactly 11 digits.");
       return;
     }
-    console.log("Form Data Submitted:", formData);
-    const dataToSend = [
-      formData.customerName,
-      formData.phoneNumber,
-      formData.address,
-      formData.email,
-      formData.invoiceNumber,
-      formatDate(new Date()),
-      formData.deliveryDate,
-      formData.items,
-      formData.orderTakenBy,
-      formData.orderHandedTo,
-      formData.status,
-      formData.advancePaid,
-      formData.amountDue,
-      formData.size,
-    ];
-
-    updateGoogleSheet(dataToSend);
-    console.log(dataToSend);
-
-    if (!error) {
-      nav("/invoice");
-    }
+    nav("/invoice");
   };
 
   return (
